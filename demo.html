@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Villa Adriano — Hvar, Croatia</title>
+  <meta name="description" content="Villa Adriano — a four-bedroom clifftop villa above Hvar Town with private infinity pool and direct Adriatic views.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    a { text-decoration: none; color: inherit; }
+
+    :root {
+      --black: #080808; --surface: #111111; --border: #1e1e1e; --border-mid: #2a2a2a;
+      --text: #e8e4de; --text-mid: #8a8480; --text-dim: #4a4744;
+      --gold: #c9a84c; --gold-dim: rgba(201, 168, 76, 0.15); --white: #ffffff;
+      --font-display: 'Cormorant Garamond', serif; --font-body: 'Inter', sans-serif;
+      --max-w: 1200px; --pad-h: clamp(24px, 5vw, 80px); --pad-section: clamp(80px, 12vw, 140px);
+    }
+
+    body { font-family: var(--font-body); background-color: var(--black); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+    /* ── Nav ── */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 24px var(--pad-h); transition: background 0.4s, border-color 0.4s; border-bottom: 1px solid transparent; }
+    nav.scrolled { background: rgba(8, 8, 8, 0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom-color: var(--border); }
+    .nav-logo { font-family: var(--font-display); font-size: 20px; font-weight: 300; letter-spacing: 0.15em; color: var(--white); text-transform: uppercase; }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-mid); transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .btn-nav { display: inline-flex; align-items: center; padding: 10px 24px; border: 1px solid rgba(201, 168, 76, 0.4); color: var(--gold) !important; font-size: 10px !important; font-weight: 600 !important; letter-spacing: 0.18em; transition: background 0.2s, border-color 0.2s !important; }
+    .btn-nav:hover { background: var(--gold-dim) !important; border-color: var(--gold) !important; }
+    .nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .nav-burger span { display: block; width: 22px; height: 1px; background: var(--text); }
+
+    /* ── Shared ── */
+    .label { display: inline-block; font-size: 10px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; }
+    .section-heading { font-family: var(--font-display); font-size: clamp(32px, 5vw, 56px); font-weight: 300; letter-spacing: 0.02em; color: var(--white); margin-top: 12px; }
+
+    /* ── Hero ── */
+    .hero-scroll-wrapper { position: relative; height: 200vh; }
+    .hero-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+    .hero-img { position: absolute; inset: 0; background-size: cover; background-position: center; transform: scale(1.15); clip-path: inset(22% 18% round 6px); will-change: transform, clip-path; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(8,8,8,0.3) 0%, rgba(8,8,8,0.05) 50%, rgba(8,8,8,0.7) 100%); z-index: 1; }
+    .hero-content { position: absolute; bottom: clamp(40px, 8vh, 80px); left: var(--pad-h); right: var(--pad-h); z-index: 2; }
+    .hero-eyebrow { font-size: 10px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; opacity: 0; transform: translateY(12px); transition: opacity 0.8s 0.2s, transform 0.8s 0.2s; }
+    .hero-title { font-family: var(--font-display); font-size: clamp(56px, 9vw, 120px); font-weight: 300; line-height: 0.9; letter-spacing: 0.02em; color: var(--white); max-width: 800px; margin-bottom: 36px; opacity: 0; transform: translateY(16px); transition: opacity 0.9s 0.35s, transform 0.9s 0.35s; }
+    .hero-content.visible .hero-eyebrow, .hero-content.visible .hero-title, .hero-content.visible .hero-cta-row { opacity: 1; transform: translateY(0); }
+    .hero-cta-row { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; opacity: 0; transform: translateY(12px); transition: opacity 0.8s 0.5s, transform 0.8s 0.5s; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 12px; padding: 16px 36px; background: var(--gold); color: var(--black); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; transition: background 0.2s; }
+    .btn-primary:hover { background: #dbb95c; }
+    .btn-primary svg { width: 14px; height: 14px; }
+    .hero-location { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+
+    /* ── Intro ── */
+    .intro { padding: var(--pad-section) var(--pad-h); max-width: var(--max-w); margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(40px, 8vw, 120px); align-items: center; border-bottom: 1px solid var(--border); }
+    .intro-heading { font-family: var(--font-display); font-size: clamp(36px, 5vw, 64px); font-weight: 300; line-height: 1.05; letter-spacing: 0.02em; color: var(--white); font-style: italic; margin-bottom: 28px; }
+    .intro-body { font-size: 15px; font-weight: 300; line-height: 1.85; color: var(--text-mid); }
+    .stats-column { display: flex; flex-direction: column; }
+    .stat-row { display: flex; align-items: center; justify-content: space-between; padding: 24px 0; border-bottom: 1px solid var(--border); }
+    .stat-row:first-child { border-top: 1px solid var(--border); }
+    .stat-label { font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-dim); }
+    .stat-value { font-family: var(--font-display); font-size: 28px; font-weight: 300; color: var(--white); letter-spacing: 0.02em; }
+
+    /* ── Gallery ── */
+    .gallery-section { padding: var(--pad-section) var(--pad-h); max-width: var(--max-w); margin: 0 auto; }
+    .section-header { margin-bottom: 48px; }
+    .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .gallery-item { overflow: hidden; background: var(--surface); }
+    .gallery-item img { transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .gallery-item:hover img { transform: scale(1.06); }
+    .g1 { aspect-ratio: 3/2; } .g2 { aspect-ratio: 3/2; }
+    .g3 { aspect-ratio: 2/3; } .g4 { aspect-ratio: 2/3; }
+    .g5 { grid-column: span 2; aspect-ratio: 16/7; }
+    .g6 { aspect-ratio: 1/1; } .g7 { aspect-ratio: 1/1; }
+    .g8 { grid-column: span 2; aspect-ratio: 3/1; }
+
+    /* ── Amenities ── */
+    .amenities-section { border-top: 1px solid var(--border); padding: var(--pad-section) var(--pad-h); }
+    .amenities-inner { max-width: var(--max-w); margin: 0 auto; }
+    .amenities-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 48px; }
+    .amenity { padding: 28px 24px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .amenity:nth-child(4n) { border-right: none; }
+    .amenity-num { font-family: var(--font-display); font-size: 11px; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 10px; }
+    .amenity-name { font-size: 13px; font-weight: 400; color: var(--text); letter-spacing: 0.03em; }
+
+    /* ── Testimonials ── */
+    .testimonials-section { border-top: 1px solid var(--border); padding: var(--pad-section) var(--pad-h); }
+    .testimonials-inner { max-width: var(--max-w); margin: 0 auto; }
+    .testimonials-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); margin-top: 48px; }
+    .testimonial { background: var(--black); padding: 40px; display: flex; flex-direction: column; }
+    .testimonial-stars { color: var(--gold); letter-spacing: 3px; font-size: 11px; margin-bottom: 20px; }
+    .testimonial-quote { font-family: var(--font-display); font-size: 22px; font-weight: 300; line-height: 1.5; font-style: italic; color: var(--text); flex: 1; margin-bottom: 32px; }
+    .testimonial-author { font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+    .testimonial-origin { font-size: 11px; font-weight: 300; color: var(--text-dim); margin-top: 4px; letter-spacing: 0.06em; }
+
+    /* ── The Area ── */
+    .area-section { border-top: 1px solid var(--border); padding: var(--pad-section) var(--pad-h); }
+    .area-inner { max-width: var(--max-w); margin: 0 auto; }
+    .area-header { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 100px); align-items: end; margin-bottom: 56px; }
+    .area-intro { font-size: 15px; font-weight: 300; line-height: 1.85; color: var(--text-mid); }
+    .area-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); }
+    .area-item { padding: 32px 24px 0 0; }
+    .area-item:not(:last-child) { border-right: 1px solid var(--border); }
+    .area-item-num { font-family: var(--font-display); font-size: 11px; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 16px; margin-top: 20px; }
+    .area-item-name { font-family: var(--font-display); font-size: 24px; font-weight: 300; color: var(--white); margin-bottom: 12px; }
+    .area-item-desc { font-size: 13px; font-weight: 300; line-height: 1.7; color: var(--text-mid); }
+    .area-item-dist { display: inline-block; margin-top: 14px; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); }
+
+    /* ── Location ── */
+    .location-section { border-top: 1px solid var(--border); padding: var(--pad-section) var(--pad-h); max-width: var(--max-w); margin: 0 auto; display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(40px, 8vw, 100px); align-items: center; }
+    .location-image { aspect-ratio: 4/3; overflow: hidden; background: var(--surface); }
+    .location-text .section-heading { margin-top: 12px; margin-bottom: 24px; }
+    .location-text p { font-size: 15px; font-weight: 300; line-height: 1.85; color: var(--text-mid); margin-bottom: 36px; }
+
+    /* ── CTA ── */
+    .cta-band { border-top: 1px solid var(--border); padding: var(--pad-section) var(--pad-h); display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .cta-heading { font-family: var(--font-display); font-size: clamp(44px, 7vw, 88px); font-weight: 300; letter-spacing: 0.02em; color: var(--white); font-style: italic; margin-top: 12px; margin-bottom: 12px; }
+    .cta-sub { font-size: 14px; font-weight: 300; color: var(--text-mid); margin-bottom: 48px; max-width: 380px; }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); padding: 40px var(--pad-h); }
+    .footer-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+    .footer-logo { font-family: var(--font-display); font-size: 18px; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+    .footer-links { display: flex; gap: 28px; list-style: none; }
+    .footer-links a { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text-mid); }
+    .footer-copy { width: 100%; max-width: var(--max-w); margin: 24px auto 0; padding-top: 24px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-dim); letter-spacing: 0.06em; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-links.open { display: flex; flex-direction: column; position: fixed; inset: 0; top: 72px; background: var(--black); padding: 40px var(--pad-h); gap: 28px; align-items: flex-start; z-index: 99; }
+      .nav-burger { display: flex; }
+      .intro { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .g5, .g8 { grid-column: span 1; aspect-ratio: 3/2; }
+      .amenities-grid { grid-template-columns: repeat(2, 1fr); }
+      .amenity:nth-child(4n) { border-right: 1px solid var(--border); }
+      .amenity:nth-child(2n) { border-right: none; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .area-header { grid-template-columns: 1fr; }
+      .area-grid { grid-template-columns: repeat(2, 1fr); }
+      .area-item { border-right: none !important; border-bottom: 1px solid var(--border); padding-right: 0; padding-bottom: 28px; }
+      .area-item:nth-child(odd) { padding-right: 16px; border-right: 1px solid var(--border) !important; }
+      .location-section { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+    <a class="nav-logo" href="demo.html">Villa Adriano</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#amenities">Amenities</a></li>
+      <li><a href="#location">Location</a></li>
+      <li><a href="contact-demo.html">Contact</a></li>
+      <li><a href="#" class="btn-nav">Check Availability</a></li>
+    </ul>
+    <div class="nav-burger" id="burger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <div class="hero-scroll-wrapper" id="heroWrapper">
+    <div class="hero-sticky">
+      <div class="hero-img" id="heroImg" style="background-image: url('https://images.unsplash.com/photo-1601919051950-bb9f3ffb3fee?auto=format&fit=crop&w=1800&q=85');"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content" id="heroContent">
+        <p class="hero-eyebrow">Hvar, Croatia</p>
+        <h1 class="hero-title">Villa Adriano</h1>
+        <div class="hero-cta-row">
+          <a href="#" class="btn-primary">Check Availability <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          <span class="hero-location">Hvar, Croatia</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Intro ── -->
+  <section class="intro">
+    <div>
+      <span class="label">The Villa</span>
+      <h2 class="intro-heading">Perched above the Adriatic, completely private.</h2>
+      <p class="intro-body">Four bedrooms on a clifftop above Hvar Town. Infinity pool that meets the horizon. Stone and glass architecture rebuilt in 2021. A ten-minute drive from the old town, a world away from everything else.</p>
+    </div>
+    <div class="stats-column">
+      <div class="stat-row"><span class="stat-label">Bedrooms</span><span class="stat-value">4</span></div>
+      <div class="stat-row"><span class="stat-label">Guests</span><span class="stat-value">8</span></div>
+      <div class="stat-row"><span class="stat-label">Pool</span><span class="stat-value">Infinity</span></div>
+      <div class="stat-row"><span class="stat-label">Established</span><span class="stat-value">2021</span></div>
+    </div>
+  </section>
+
+  <!-- ── Gallery ── -->
+  <section class="gallery-section" id="gallery">
+    <div class="section-header">
+      <span class="label">Photography</span>
+      <h2 class="section-heading">The Space</h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item g1"><img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=900&q=80" alt="Villa Adriano" loading="lazy"></div>
+      <div class="gallery-item g2"><img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=900&q=80" alt="Villa Adriano" loading="lazy"></div>
+      <div class="gallery-item g3"><img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=600&q=80" alt="Villa Adriano" loading="lazy"></div>
+      <div class="gallery-item g4"><img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=600&q=80" alt="Villa Adriano" loading="lazy"></div>
+      <div class="gallery-item g5"><img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=1400&q=80" alt="Villa Adriano" loading="lazy"></div>
+      <div class="gallery-item g6"><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=700&q=80" alt="Villa Adriano" loading="lazy"></div>
+      <div class="gallery-item g7"><img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=700&q=80" alt="Villa Adriano" loading="lazy"></div>
+      <div class="gallery-item g8"><img src="https://images.unsplash.com/photo-1564501049412-61d2ad2d5852?auto=format&fit=crop&w=1400&q=80" alt="Villa Adriano" loading="lazy"></div>
+    </div>
+  </section>
+
+  <!-- ── Amenities ── -->
+  <section class="amenities-section" id="amenities">
+    <div class="amenities-inner">
+      <span class="label">What's Included</span>
+      <h2 class="section-heading">Amenities</h2>
+      <div class="amenities-grid">
+        <div class="amenity"><div class="amenity-num">01</div><div class="amenity-name">Infinity Pool</div></div>
+        <div class="amenity"><div class="amenity-num">02</div><div class="amenity-name">Private Chef Available</div></div>
+        <div class="amenity"><div class="amenity-num">03</div><div class="amenity-name">Airport Transfer</div></div>
+        <div class="amenity"><div class="amenity-num">04</div><div class="amenity-name">Daily Housekeeping</div></div>
+        <div class="amenity"><div class="amenity-num">05</div><div class="amenity-name">Clifftop Sea Views</div></div>
+        <div class="amenity"><div class="amenity-num">06</div><div class="amenity-name">Outdoor Dining</div></div>
+        <div class="amenity"><div class="amenity-num">07</div><div class="amenity-name">High-Speed WiFi</div></div>
+        <div class="amenity"><div class="amenity-num">08</div><div class="amenity-name">Air Conditioning</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Testimonials ── -->
+  <section class="testimonials-section">
+    <div class="testimonials-inner">
+      <span class="label">Guest Reviews</span>
+      <h2 class="section-heading">What Our Guests Say</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-quote">"We've been to Hvar four times and never found anything close to this. The infinity pool against the Adriatic sunset is something you genuinely don't forget. Already talking about next summer."</p>
+          <div class="testimonial-author">Oliver & Harriet W.</div>
+          <div class="testimonial-origin">Edinburgh, UK — July 2024</div>
+        </div>
+        <div class="testimonial">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-quote">"Private, impeccably designed, and absolutely silent except for the sea. We were a group of eight and had everything we needed. The private chef was exceptional. Unforgettable week."</p>
+          <div class="testimonial-author">Marco B.</div>
+          <div class="testimonial-origin">Milan, Italy — August 2025</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── The Area ── -->
+  <section class="area-section">
+    <div class="area-inner">
+      <div class="area-header">
+        <div>
+          <span class="label">The Area</span>
+          <h2 class="section-heading">Hvar at Its Best</h2>
+        </div>
+        <p class="area-intro">The villa sits above the action — close enough to walk into Hvar Town for dinner, far enough that you never hear it. The Adriatic is visible from every room.</p>
+      </div>
+      <div class="area-grid">
+        <div class="area-item">
+          <div class="area-item-num">01</div>
+          <div class="area-item-name">Hvar Town</div>
+          <p class="area-item-desc">One of the most beautiful towns in the Mediterranean. Renaissance squares, Venetian architecture, excellent restaurants and a harbour that fills with superyachts in peak season.</p>
+          <span class="area-item-dist">10 min drive</span>
+        </div>
+        <div class="area-item">
+          <div class="area-item-num">02</div>
+          <div class="area-item-name">Pakleni Islands</div>
+          <p class="area-item-desc">A chain of pine-covered islands just offshore — clear water, secluded coves, and waterfront restaurants you can only reach by boat. Worth every minute.</p>
+          <span class="area-item-dist">15 min by boat</span>
+        </div>
+        <div class="area-item">
+          <div class="area-item-num">03</div>
+          <div class="area-item-name">Stari Grad</div>
+          <p class="area-item-desc">The quieter, older side of Hvar island — a 2,400-year-old town with no traffic, a beautiful bay, and some of the best wine in Croatia coming from the surrounding plains.</p>
+          <span class="area-item-dist">25 min drive</span>
+        </div>
+        <div class="area-item">
+          <div class="area-item-num">04</div>
+          <div class="area-item-name">Bonj Les Bains</div>
+          <p class="area-item-desc">Croatia's most celebrated beach club — a natural pebble cove with white umbrellas, a cocktail bar, and water so clear you can see the bottom at five metres. Book in advance.</p>
+          <span class="area-item-dist">20 min drive</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Location ── -->
+  <section class="location-section" id="location">
+    <div class="location-image">
+      <img src="https://images.unsplash.com/photo-1555990793-da11153b2473?auto=format&fit=crop&w=900&q=80" alt="Hvar, Croatia" loading="lazy">
+    </div>
+    <div class="location-text">
+      <span class="label">Getting There</span>
+      <h2 class="section-heading">Hvar, Croatia</h2>
+      <p>Villa Adriano is 10 minutes from Hvar Town and 40 minutes from Split Airport by catamaran. We arrange private boat or car transfers — let us know your arrival details and we'll handle the rest.</p>
+      <a href="#" class="btn-primary" style="display:inline-flex;">Book Your Stay <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;margin-left:12px;"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <section class="cta-band">
+    <span class="label">Reserve Your Dates</span>
+    <h2 class="cta-heading">Ready to Book?</h2>
+    <p class="cta-sub">Book directly and keep the middleman out of it.</p>
+    <a href="#" class="btn-primary">Check Availability <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-logo">Villa Adriano</span>
+      <ul class="footer-links">
+        <li><a href="mailto:info@villadriano.com">info@villadriano.com</a></li>
+        <li><a href="tel:+385981234567">+385 98 123 4567</a></li>
+        <li><a href="contact-demo.html">Contact</a></li>
+        <li><a href="#" target="_blank">Instagram</a></li>
+      </ul>
+    </div>
+    <p class="footer-copy">© 2026 Villa Adriano · Hvar, Croatia · All rights reserved</p>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
+    const heroImg = document.getElementById('heroImg');
+    const heroWrapper = document.getElementById('heroWrapper');
+    const heroContent = document.getElementById('heroContent');
+    setTimeout(() => heroContent.classList.add('visible'), 200);
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function onScroll() {
+      const wrapperTop = heroWrapper.getBoundingClientRect().top + window.scrollY;
+      const progress = Math.max(0, Math.min(1, (window.scrollY - wrapperTop) / window.innerHeight));
+      const insetV = lerp(22, 0, progress);
+      const insetH = lerp(18, 0, progress);
+      const radius = lerp(6, 0, progress);
+      heroImg.style.clipPath = `inset(${insetV}% ${insetH}% round ${radius}px)`;
+      heroImg.style.transform = `scale(${lerp(1.15, 1.0, progress)})`;
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+    document.querySelectorAll('#navLinks a').forEach(a => {
+      a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+    });
+  </script>
+</body>
+</html>
